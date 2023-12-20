@@ -1,0 +1,5 @@
+[Evince Backend]
+Module=typstdocument
+Resident=true
+TypeDescription=Typst Documents
+MimeType=application/x-typst;

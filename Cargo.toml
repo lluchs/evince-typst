@@ -2,7 +2,9 @@
 name = "evince-typst"
 version = "0.1.0"
 edition = "2021"
-crate-type = ["rlib", "staticlib"]
+
+[lib]
+crate-type = ["staticlib", "rlib"]
 
 [dependencies]
 typst = { git = "https://github.com/typst/typst.git", tag = "v0.10.0" }
