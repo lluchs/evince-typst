@@ -122,13 +122,13 @@ pub unsafe extern "C" fn typst_free_string(str: *mut c_char) {
 /// Get the document's title. Returns null if there is no title.
 /// Call `typst_free_string()` to free the returned pointer.
 #[no_mangle]
-pub unsafe extern "C" fn typst_get_title(doc: *const Document) -> *const c_char {
+pub unsafe extern "C" fn typst_get_title(doc: *const Document) -> *mut c_char {
     if let Some(title) = &(*doc).title {
         CString::new(title.as_str())
             .expect("CString::new failed")
             .into_raw()
     } else {
-        std::ptr::null()
+        std::ptr::null_mut()
     }
 }
 
