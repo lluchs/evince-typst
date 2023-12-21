@@ -172,7 +172,7 @@ typst_document_render (EvDocument      *document,
 					      width, height);
 
 	cairo_surface_flush (surface);
-	typst_render (typst->doc, page, width, height, cairo_image_surface_get_data (surface));
+	typst_render (typst->doc, page, rc->rotation, width, height, cairo_image_surface_get_data (surface));
 	cairo_surface_mark_dirty (surface);
 
 	return surface;

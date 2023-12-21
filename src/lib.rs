@@ -139,6 +139,7 @@ pub unsafe extern "C" fn typst_get_title(doc: *const Document) -> *const c_char 
 pub unsafe extern "C" fn typst_render(
     doc: *const Document,
     page: usize,
+    rotation: i32,
     width: usize,
     height: usize,
     surface: *mut u8,
@@ -147,10 +148,32 @@ pub unsafe extern "C" fn typst_render(
     let pixel_per_pt =
         ((width + height) as f64 / (frame.width().to_pt() + frame.height().to_pt())) as f32;
     let pixmap = typst_render::render(frame, pixel_per_pt, Color::WHITE);
-    assert_eq!(pixmap.width() as usize, width);
-    assert_eq!(pixmap.height() as usize, height);
-    let mut i: isize = 0;
-    for pixel in pixmap.pixels() {
+    if rotation == 90 || rotation == 270 {
+        assert_eq!(pixmap.width() as usize, height);
+        assert_eq!(pixmap.height() as usize, width);
+    } else {
+        assert_eq!(pixmap.width() as usize, width);
+        assert_eq!(pixmap.height() as usize, height);
+    }
+    let width = width as isize;
+    let height = height as isize;
+    let is = (0..(width * height))
+        .map(|i| match rotation {
+            90 => {
+                let x = i % height;
+                let y = i / height;
+                (width - y - 1) + width * x
+            }
+            180 => width * height - i - 1,
+            270 => {
+                let x = i % height;
+                let y = i / height;
+                y + width * (height - x - 1)
+            }
+            _ => i,
+        })
+        .map(|i| i * 4);
+    for (i, pixel) in is.zip(pixmap.pixels()) {
         if cfg!(target_endian = "little") {
             *surface.offset(i) = pixel.blue();
             *surface.offset(i + 1) = pixel.green();
@@ -162,6 +185,5 @@ pub unsafe extern "C" fn typst_render(
             *surface.offset(i + 2) = pixel.green();
             *surface.offset(i + 3) = pixel.blue();
         }
-        i += 4;
     }
 }

@@ -12,5 +12,5 @@ void typst_get_page_size_pt(void *doc, size_t page, double *width, double *heigh
 void typst_get_page_size_mm(void *doc, size_t page, double *width, double *height);
 void typst_free_string(char *str);
 char *typst_get_title(void *doc);
-void typst_render(void *doc, size_t page, size_t width, size_t height, uint8_t *surface);
+void typst_render(void *doc, size_t page, int32_t rotation, size_t width, size_t height, uint8_t *surface);
 
