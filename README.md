@@ -21,10 +21,10 @@ ninja -C build
 Install:
 ```sh
 # Path will vary depending on your distribution
-cp -t /usr/lib/evince/4/backends build/evince-backend/{typstdocument.evince-backend,libtypstdocument.so}
-mkdir -p /usr/local/share/mime/packages
-cp -t /usr/local/share/mime/packages evince-typst.xml
-update-mime-database /usr/local/share/mime/packages
+sudo cp -t /usr/lib/evince/4/backends build/evince-backend/{typstdocument.evince-backend,libtypstdocument.so}
+sudo mkdir -p /usr/local/share/mime/packages
+sudo cp -t /usr/local/share/mime/packages evince-typst.xml
+sudo update-mime-database /usr/local/share/mime/
 ```
 
 ## License
